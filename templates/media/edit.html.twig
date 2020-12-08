@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ form_title }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+
+		<h1>{{ form_title }}</h1>
+		<div class="row">
+			<div class="col">
+				<div class="card" style="width: 36rem;">
+					{% if medium.typeFichier == 'image/jpeg' %}
+						<img class="card-img-top" src="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}" alt="{{ medium.libelle }}">
+					{% else %}
+						<video controls>
+							<source src="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}" alt="{{ medium.nom }}" type="{{ medium.typeFichier }}">
+							Sorry, your browser doesn't support embedded videos.
+						</video>
+					{% endif %}
+
+					<div class="card-body">
+						{{ form_start(form) }}
+						{{ form_label(form.libelle) }}
+						<h5 class="card-title">{{ form_widget(form.libelle) }}</h5>
+						{{ form_label(form.description) }}
+						<p class="card-text">
+							{{ form_widget(form.description) }}</p>
+
+						{{ form_label(form.imageFile) }}
+						{{ form_widget(form.imageFile) }}
+
+						{{ form_widget(form.nom, {'attr': {'class': 'd-none'}}) }}
+						{{ form_widget(form.created_at, {'attr': {'class': 'd-none'}}) }}
+						{{ form_widget(form.updated_at, {'attr': {'class': 'd-none'}}) }}
+						{{ form_widget(form.user, {'attr': {'class': 'd-none'}}) }}
+						{{ form_end(form) }}
+
+						<a href="{{ path('media_index') }}" class="btn btn-outline-success btn-sm btn-block mt-2">
+							<i class="fas fa-home"></i>
+							back to list</a>
+						<form method="post" action="{{ path('media_delete', {'id': medium.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+							<input type="hidden" name="_method" value="DELETE">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ medium.id) }}">
+							<button class="btn btn-outline-danger btn-sm btn-block mt-2">
+								<i class="far fa-trash-alt"></i>
+								Delete</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<p>Les commentaires des membres...</p>
+			</div>
+	</div>
+{% endblock %}

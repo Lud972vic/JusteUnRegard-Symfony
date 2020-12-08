@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5">
+		<div class="row">
+			<div class="col">
+				<h1>Article</h1>
+
+				{% for message in app.flashes('message') %}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				<table class="table table-striped">
+					<thead>
+						<tr class="text-center">
+							<th>Titre</th>
+							<th>Contenu</th>
+							<th>Image</th>
+							<th>Updated_at</th>
+							<th>actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for article in articles %}
+							<tr class="text-center">
+								<td>{{ article.titre | u.truncate(75) | raw }}...</td>
+								<td>{{ article.contenu | u.truncate(75) | raw }}...</td>
+								<td>
+									<img class="imgSmallCover" src="{{ asset ("uploads/images/featured/") }}{{ article.image }}" alt="{{ article.titre }}">
+								</td>
+								<td>{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                            	<td>
+									<div class="btn-group" role="group" aria-label="Basic example">
+										<a href="{{ path('news_article_show', {'id': article.id}) }}" class="btn btn-outline-success">
+											<i class="far fa-eye"></i>
+											<br>show</a>
+										<a href="{{ path('news_article_edit', {'id': article.id}) }}" class="btn btn-outline-warning">
+											<i class="far fa-edit"></i>
+											<br>edit</a>
+										<form name="myForm" method="post" action="{{ path('news_article_delete', {'id': article.id}) }}">
+											<input type="hidden" name="_method" value="DELETE">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                                            <div class="btn btn-outline-danger">
+                                                <input type="submit" onclick="validateForm()" value="Delete"> 
+                                                <br><i class="far fa-trash-alt"></i>
+                                            </div>
+										</form>
+									</div>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="13">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<a href="{{ path('news_article_add') }}" class="btn btn-outline-primary mt-5">
+					<i class="fas fa-plus"></i>
+					Create new</a>
+			</div>
+		</div>
+
+		<div class="mt-5 navigation">
+			{{ knp_pagination_render(articles) }}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function validateForm() { 
+            event.preventDefault(); // prevent form submit 
+            var form = document.forms["myForm"]; // storing the form 
+        
+            swal({ 
+                title: "Are you sure ?", 
+                text: "Once deleted, you will not be able to recover this article !", 
+                icon: "warning", 
+                buttons: true, 
+                dangerMode: true, 
+            }) 
+            .then((willDelete) => { 
+                if (willDelete) { 
+                    form.submit(); 
+                } else { 
+                    swal("Your article is safe!"); 
+                } 
+            }); 
+        }
+    </script>
+{% endblock %}

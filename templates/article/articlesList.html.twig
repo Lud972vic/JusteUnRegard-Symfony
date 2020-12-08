@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List of articles
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid mt-5">
+		<h1 class="h3 font-weight-normal mb-5 text-center">{% trans %}
+			Item list
+			{% endtrans %}</h1>
+
+		{% for message in app.flashes('message') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<div class="row no-padding">
+			{% for  article in articles %}
+				<div class="col-md-4 col-lg-2 mb-2">
+					<div class="card mb-3 h-100">
+						<img src="{{ vich_uploader_asset(article, 'imageFile') | imagine_filter('gd_little') }}" class="card-img-top img-fluid" alt="{{ article.titre }}">
+						<div class="card-body">
+							<h5 class="card-title">{{ article.titre }}</h5>
+
+							{# <p>{{ article.contenu | u.truncate(512) | raw }}...</p> #}
+
+							<p class="card-text">
+								<small class="text-muted">Published on
+									{{ article.createdAt | date('d/m/Y H\\Hi') }}
+									<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+									{{ article.commentaire | length }}
+									comments
+								</small>
+							</p>
+
+							<a class="btn btn-outline-dark btn-sm mb-5" href="{{ path('news_article_slug', {'slug': article.slug}) }}" role="button">
+								{% trans %}
+								Read the article
+								{% endtrans %}
+							</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+		<p class="m-5">
+			{{ user }}
+		</p>
+
+		<div class="navigation">
+			{{ knp_pagination_render(articles) }}
+		</div>
+	</div>
+{% endblock %}

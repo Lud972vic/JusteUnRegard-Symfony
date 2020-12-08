@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<style>
+		.chat {
+			height: 200px;
+			overflow: auto;
+			margin-bottom: 20px;
+		}
+	</style>
+
+{% endblock %}
+
+{% block title %}Chat
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="text-center mt-5">Venez échanger sur le Tch<i class="far fa-comments text-warning"></i>t</h1>
+		<div class="form-group mt-5">
+			<label for="lesmessages">Les messages du Tchat</label>
+			<div class="border border-warning chat" id="chat"></div>
+		</div>
+
+		<div class="form-group">
+			<label for="name">Votre pseudo</label>
+			<input type="text" class="form-control border border-warning" id="name" aria-describedby="nameHelp" required disabled value="{{ (app.user) ? app.user.pseudo : '' }}">
+			<small id="nameHelp" class="form-text text-muted">VOus pouvez-vous changer de pseudo dans votre profil !</small>
+		</div>
+
+        {%  if app.user %}
+            <div class="form-group mt-5">
+                <label for="message">Votre message</label>
+                <input type="text" class="form-control border border-warning" id="message" aria-describedby="messageHelp" required>
+                <small id="messageHelp" class="form-text text-muted">Toujours rester courtois</small>
+            </div>
+            <button type="button" id="sendBtn" class="btn btn-outline-warning" >Envoyer</button>
+        {% else %} 
+            <a class="btn btn-sm btn-outline-warning" href="{{ path('app_login') }}"><i class="fas fa-sign-out-alt"></i></i>
+                Connectez-vous, pour dialoguer !</a>
+        {% endif %}
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+    {# 
+    Maintenant que le serveur websocket est en cours d'exécution, nous pouvons nous y connecter! 
+    Pour ce faire, nous devons ajouter du javascript à notre modèle twig. 
+    Ici, nous initialisons un objet WebSocket et transmettons l'URL à notre serveur websocket.
+
+    Ensuite, nous ajoutons un écouteur d'événement au websocket qui s'exécute lorsque l' événement open est lancé. 
+    Cela signifie que nous sommes connectés au serveur.
+    #}
+	<script type="text/javascript">
+        const socket = new WebSocket("ws://localhost:3001");
+
+        let d ;
+        let date ;
+        let hours ;
+        
+        //La fonction addMessage ajoute le nom, le message et l'heure à la div de discussion. 
+        //Ensuite, lorsque quelqu'un clique sur le bouton d'envoi, il ajoute le message au div de discussion après l'envoi au serveur websocket. 
+        //Dans l'écouteur d'événements de message, j'ajoute également tous les messages reçus à la div de discussion.
+        function addMessage(name, message) {
+            const messageHTML = "<div class='message m-2'> <i class='far fa-clock'></i><small> " + date + ' ' + hours + "</small><strong> " + name.charAt(0).toUpperCase() + name.slice(1)  + " <i class='fas fa-signature'></i> </strong> " + message + "</div>";
+            document.getElementById("chat").innerHTML += messageHTML
+        }
+
+        //L'événement qui est passé à l'événement de message a une propriété data qui contient le message envoyé. 
+        socket.addEventListener("message", function(e) {
+                console.log(e.data);
+
+                try
+                {
+                    const message = JSON.parse(e.data);
+                    addMessage(message.name, message.message);
+                }
+                catch(e)
+                {
+                    console.log(e);
+                }
+            });
+
+        //Nous voulons pouvoir transmettre des messages au serveur. 
+        //Nous utilisons la méthode send de notre objet websocket pour envoyer des messages. 
+        //Nous enverrons un objet sérialisé contenant les valeurs de nos champs de saisie de nom et de message lorsque quelqu'un cliquera sur le bouton Envoyer.
+       document.getElementById("sendBtn").addEventListener("click", function() {
+            d = new Date();
+            date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+            hours = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
+            //On protege la saisie contre du code malicieux :-)
+            //https://omonayajo.com/how-to-strip-html-tags-in-javascript/
+            let nameStrippedString = document.getElementById("name").value.replace(/(<([^>]+)>)/gi, "");
+
+            const lemessage = {
+                date: date,
+                hours: hours,
+                name: nameStrippedString,
+                message: document.getElementById("message").value
+            }
+
+        // Ici que nous créons un objet avec le nom, le message, date et heure en utilisant JSON.stringify pour la sérialisation 
+        // et en utilisant la méthode send pour envoyer un message à notre serveur websocket
+        socket.send(JSON.stringify(lemessage));
+
+        if (lemessage.name == "" || lemessage.name == null || lemessage.message == "" || lemessage.message == null) {
+            swal("Oops" ,  "Juste un petit message à saisir... il est vide!" ,  "error", {
+                buttons: "Ok",
+                timer: 3000,
+                className: "red-bg"
+                });
+
+            return false;
+        }else{
+            addMessage(lemessage.name, lemessage.message);
+            document.getElementById("message").value = "";
+        }
+        
+
+        });
+	</script>
+{% endblock %}
+
+{# 
+Fichiers tchat
+src\Command\WebsocketServerCommand.php
+src\Controller\TchatController.php
+src\Websocket 
+https://rojas.io/symfony-5-websockets-tutorial/
+#}

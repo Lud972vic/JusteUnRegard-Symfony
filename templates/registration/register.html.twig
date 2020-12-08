@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% trans %}Register{% endtrans %}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		{% for flashError in app.flashes('verify_email_error') %}
+			<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+		{% endfor %}
+
+		<h1 class="h3 mb-5 font-weight-normal">{% trans %}Register{% endtrans %}</h1>
+
+		{{ form_start(registrationForm) }}
+
+		{{ form_row(registrationForm.civilite, {
+            label: 'Civility'
+        }) }}
+		{{ form_row(registrationForm.nom, {
+            label: 'LastName'
+        }) }}
+		{{ form_row(registrationForm.prenom, {
+            label: 'FirstName'
+        }) }}
+		{{ form_row(registrationForm.pseudo, {
+            label: 'NickName'
+        }) }}
+        {{ form_row(registrationForm.profil, {
+            label: 'Profile'
+        }) }}
+		{{ form_row(registrationForm.email, {
+            label:'Email'
+        }) }}
+		{{ form_row(registrationForm.date_naissance, {
+            label: 'Day of birthday'
+        }) }}
+		{{ form_row(registrationForm.photo, {
+            label: 'Picture'
+        }) }}
+		{{ form_row(registrationForm.description, {
+            label: 'Description'
+        }) }}
+		{{ form_row(registrationForm.telephone, {
+            label: 'Phone'
+        }) }}
+		{{ form_row(registrationForm.url_compte_instagram, {
+            label: 'Account Instragram'
+        }) }}
+		{{ form_row(registrationForm.url_compte_facebook, {
+            label: 'Account FaceBook'
+        }) }}
+		{{ form_row(registrationForm.url_compte_autre, {
+            label: 'Other account'
+        }) }}
+		{{ form_row(registrationForm.ip, {
+            label: 'Your IP'
+        }) }}
+
+		{{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+
+		{{ form_row(registrationForm.ville, {
+            label: 'City'
+        }) }}
+
+		{{ form_row(registrationForm.agreeTerms) }}
+
+		<button type="submit" class="btn btn-outline-dark btn-sm btn-block mb-5">{% trans %}Register{% endtrans %}</button>
+		{{ form_end(registrationForm) }}
+	</div>
+{% endblock %}

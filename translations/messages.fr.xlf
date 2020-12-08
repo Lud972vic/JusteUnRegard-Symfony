@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="g9VoXTb" resname="Your article has been published !">
+        <source>Your article has been published !</source>
+        <target>Votre article a été publié !</target>
+      </trans-unit>
+      <trans-unit id="ARjBTvy" resname="Item list">
+        <source>Item list</source>
+        <target>Liste d'articles</target>
+      </trans-unit>
+      <trans-unit id="ScJmuqq" resname="Search">
+        <source>Search</source>
+        <target>Rechercher</target>
+      </trans-unit>
+      <trans-unit id="1w5AoHR" resname="Read the article">
+        <source>Read the article</source>
+        <target>Lire l'article</target>
+      </trans-unit>
+      <trans-unit id="STD2DxM" resname="The articles">
+        <source>The articles</source>
+        <target>Les articles</target>
+      </trans-unit>
+      <trans-unit id="7szLP4X" resname="Article management">
+        <source>Article management</source>
+        <target>Gestion d'articles</target>
+      </trans-unit>
+      <trans-unit id="REl5tlo" resname="Legal mentions">
+        <source>Legal mentions</source>
+        <target>Mentions légales</target>
+      </trans-unit>
+      <trans-unit id="Jxxi_i3" resname="My profile">
+        <source>My profile</source>
+        <target>Mon profil</target>
+      </trans-unit>
+      <trans-unit id="wYmEDPf" resname="Log in">
+        <source>Log in</source>
+        <target>S'identifier</target>
+      </trans-unit>
+      <trans-unit id="x5Pg2aH" resname="Registration">
+        <source>Registration</source>
+        <target>S'inscrire</target>
+      </trans-unit>
+      <trans-unit id="XiuOllA" resname="Sign up">
+        <source>Sign up</source>
+        <target>Se connecter</target>
+      </trans-unit>
+      <trans-unit id="SPDT05f" resname="Sign out">
+        <source>Sign out</source>
+        <target>Déconnexion</target>
+      </trans-unit>
+      <trans-unit id="S0LGaQ6" resname="Administration">
+        <source>Administration</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="JxEjzyi" resname="Easy-admin">
+        <source>Easy-admin</source>
+        <target>Administration facile</target>
+      </trans-unit>
+      <trans-unit id="JI5jPA_" resname="Quick user management">
+        <source>Quick user management</source>
+        <target>Gestion rapide des utilisateurs</target>
+      </trans-unit>
+      <trans-unit id="u3I07BJ" resname="Register">
+        <source>Register</source>
+        <target>S'inscrire</target>
+      </trans-unit>
+      <trans-unit id="JsLwXYO" resname="Your media has been published !">
+        <source>Your media has been published !</source>
+        <target>Votre média a été publié !</target>
+      </trans-unit>
+      <trans-unit id="Tg.PCSO" resname="Your media has been updated !">
+        <source>Your media has been updated !</source>
+        <target>Votre média a été mis à jour !</target>
+      </trans-unit>
+      <trans-unit id="rXf60AD" resname="Your media has been deleted !">
+        <source>Your media has been deleted !</source>
+        <target>Votre média a été supprimé !</target>
+      </trans-unit>
+      <trans-unit id="9OX6Gnb" resname="Our members">
+        <source>Our members</source>
+        <target>Nos membres</target>
+      </trans-unit>
+      <trans-unit id="zmd4qe0" resname="Media management">
+        <source>Media management</source>
+        <target>Gestion de médias</target>
+      </trans-unit>
+      <trans-unit id="k2oWHDk" resname="Editor">
+        <source>Editor</source>
+        <target>Éditeur</target>
+      </trans-unit>
+      <trans-unit id="Ox6zaz7" resname="Please select a medium, please.">
+        <source>Please select a medium, please.</source>
+        <target>Veuillez sélectionner un média, s'il vous plait.</target>
+      </trans-unit>
+      <trans-unit id="qtUGgSn" resname="Be curious">
+        <source>Be curious</source>
+        <target>Soyez curieux</target>
+      </trans-unit>
+      <trans-unit id="RcagWHE" resname="The pictures">
+        <source>The pictures</source>
+        <target>Les photographies</target>
+      </trans-unit>
+      <trans-unit id="QgPtYe." resname="The tutorials">
+        <source>The tutorials</source>
+        <target>Les tutoriels</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

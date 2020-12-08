@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} photographie/{{ photographie.libelle }} {% endblock %}
+
+{% block body %}
+    <div class="shadow p-3 mb-5 bg-white rounded container mt-5">
+        <div class="jumbotron text-center">
+            <h1 class="display-4 mb-5">{{ photographie.libelle }}</h1>
+            <img src="{{ vich_uploader_asset(photographie, 'imageFile') | imagine_filter('gd_big') }}"
+                 class="mr-3 img-fluid"
+                 alt="{{ photographie.libelle }}">
+            <small><p>Published on {{ photographie.createdAt | date('d/m/Y à H\\Hi') }}</p></small>
+            <br>
+            <p class="lead">
+                {{ photographie.description | raw }}
+            </p>
+        </div>
+        <div class="shadow p-3 mb-5 bg-white rounded">
+            <div class="text-center mb-5">
+                <h1 class="display-4">Comments</h1>
+                <small>
+                    <p>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        {{ photographie.commentaire | length }} comments 
+                    </p>
+                </small>
+            </div>
+
+            {# <div style="height:300px;overflow:auto;">
+                <ul class="lead">
+                    {% for commentaire in photographie.commentaire %}
+                        <small>
+                            <li class="mt-4">Published by {{ commentaire.user.nom }}
+                                <i class="far fa-clock"></i> {{ commentaire.createdAt|date('d/m/Y à h\\hi') }}</li>
+                                <i class="far fa-keyboard"></i> {{ commentaire.contenu }}
+                        </small>
+                    {% else %}
+                        <li>There are no comment yet !</li>
+                    {% endfor %}
+                </ul>
+            </div> #}
+
+            <div style="height:300px;overflow:auto;">
+                <ul class="lead">
+                    <div id="listComment"></div>
+                </ul>
+            </div>
+
+            <div class="shadow p-5 mt-5 bg-white rounded">
+                {% if is_granted('ROLE_USER') %}
+                    <h5 class="display-4 text-center mb-5">Add a comment</h5>
+                    {{ form(commentaireForm) }}
+                    <br>
+                    <br>
+                {% endif %}
+
+                <a class="btn btn-outline-dark btn-sm btn-block mt-2"
+                href="{{ path('home_murdephotographie') }}" role="button">
+                {% trans %} The pictures {% endtrans %}
+                </a>
+                <br>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // On attend le chargement du document
+        window.onload = () => {
+
+        // On charge la liste des commentaires, la première fois
+        ajaxAddCommentaire();
+
+        // On a besoin d'écouter 2 évènements, l'un sur la zone de texte pour la touche entrée, l'autre sur le bouton pour le clic
+        // On va chercher la zone de texte "comment_form_contenu"
+            let texte = document.querySelector("#comment_form_contenu")
+                texte.addEventListener("keyup", verifEntree)
+            
+        // On va chercher le bouton "comment_form_Send"
+            let valid = document.querySelector("#comment_form_Send")
+                valid.addEventListener("click", ajaxAddCommentaire)
+        }
+
+        // On doit maintenant vérifier si la touche appuyée est la touche "entrée", puis exécuter la fonction "ajaxAddCommentaire"
+            function verifEntree(e){
+                if(e.key == "Enter"){
+                    ajaxAddCommentaire();
+                }
+            }
+
+        // La fonction "ajaxAddCommentaire" se chargera d'envoyer une requête Ajax à notre serveur pour enregistrer le message
+            function ajaxAddCommentaire(e){
+                // On récupère la valeur dans le champ "comment_form_contenu"
+                let message = document.querySelector("#comment_form_contenu").value
+
+                // On crée un objet JS pour le message
+                let donnees = {}
+
+                // On vérifie si on a un message
+                if (message != "") {
+
+                    // On stop le comportement par défaut du formulaire
+                        e.preventDefault();
+
+                    //  On stock le message dans l'objet JS 'donnees'
+                        donnees["message"] = message
+                } else {
+                    // Si on n'a pas de message, on met 'vide', afin de récupèrer au chargement de la page l'ensemble des messages
+                        donnees["message"] = "" 
+                }
+
+                    // On convertit les données en json
+                        var donneesJson = JSON.stringify(donnees)
+                        console.log(donneesJson);
+
+                    // On génére l'URL
+                        var url = "{{ path('ajaxaddcomment', {'id': photographie.id}) }}";
+
+                    // On envois la reqûete
+                        $.post(url, donneesJson, function(response) {
+                        
+                    //On appel notre function chargeMessages() et on lui passe la liste des messages 
+                        var $list = JSON.parse(response.listComments);
+                        chargeMessages($list)
+
+                    // On a une réponse, l'enregistrement a fonctionné 
+                    // &
+                    // On efface le champ texte et on décoche le RGPD
+                        document.querySelector("#comment_form_contenu").value = "";
+                        document.getElementById('comment_form_rgpd').checked = false;
+                        }, 'JSON');
+            }
+
+        //On actualise la liste des commentaires, avec le retour de la Response Ajax
+            function chargeMessages(responseListComments) {
+                //On sélection l'élèment par son Id
+                let elt = document.getElementById('listComment');
+
+                //On efface l'élèment 'listComment'
+                elt.innerHTML = "";
+
+                //On stocke la liste des commentaires
+                let listComments = "";
+                                
+                //On bloucle sur la Response
+                responseListComments.forEach(function(comment) {
+                    listComments += '<small> <li class="mt-4 text-success">Published by ' 
+                                + comment.pseudo +
+                            ' </li><i class="far fa-keyboard"></i> ' 
+                                + comment.contenu  + 
+                            '</small>';
+                });
+
+                //On met à jour l'élèment du DOM avec la liste des commentaires reçues
+                elt.innerHTML = listComments;
+            }
+    </script>
+{% endblock %}

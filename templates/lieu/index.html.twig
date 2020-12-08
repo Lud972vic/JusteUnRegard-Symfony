@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos adhérents se cachent derrière leur appareil photo
+{% endblock %}
+
+{% block stylesheets %}
+	<!-- Nous chargeons les fichiers CDN de Leaflet. Le CSS AVANT le JS -->
+	<link rel="stylesheet" type="text/css" href="{{asset('css/leaflet/leaflet.css')}}"/>
+	<link rel="stylesheet" type="text/css" href="{{asset('css/leaflet/MarkerCluster.css')}}"/>
+{% endblock %}
+
+{% block body %}
+	<style type="text/css">
+		body {
+			/*Image de fond*/
+			background-image: url("{{asset('uploads/background/pin.jpg')}}") !important;
+			background-repeat: no-repeat !important;
+			background-size: cover !important;
+			background-position: center !important;
+		}
+
+		#map {
+			/* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+			height: 500px;
+			width: auto;
+		}
+	</style>
+
+	<div class="js-user-info" data-is-authenticated="{{ markers }}"></div>
+	<div style="margin-bottom: 50px">
+		<div class="container-fluide" style="margin-top: 500px">
+			<div class="card border-warning center-div" style="max-width: 95%">
+				<div class="card-body text-warning">
+					<h5 class="card-title">
+						Nos adhérents se cachent derrière leur appareil photo<img src="{{asset('uploads/background/instagram.png')}}" height="30"/>
+					</h5>
+					<div id="map"></div>
+					<p class="card-text text-warning">
+						Renseigner votre code postal dans votre profil, afin d'être visible sur la carte !</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript" src="{{asset('js/leaflet.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/leaflet.markercluster.js')}}"></script>
+	<script>
+		mapMesadherents();
+
+        function mapMesadherents() {
+            var map = L.map("map", {
+                center: [
+                48.856614, 2.352222
+                ],
+                minZoom: 5,
+                zoom: 6
+            });
+
+            L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png").addTo(map);
+
+            var myIcon = L.icon({
+                iconUrl: ".\\uploads\\background\\instagram.png",
+                iconSize: [
+                64, 64
+                ],
+                iconAnchor: [
+                9, 21
+                ],
+                popupAnchor: [0, -14]
+            });
+
+            var markerClusters = L.markerClusterGroup();
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var querySelectorData = document.querySelector(".js-user-info");
+                var dataset = querySelectorData.dataset.isAuthenticated;
+                var jsonParse = JSON.parse(dataset);
+
+                for (var i = 0; i < jsonParse.length; ++ i) {
+                var popup = "<b>Salut, je suis </b>" + '<b>' + jsonParse[i].name + ', </b><br/>je réside à ' + jsonParse[i].city + '<br> et je suis un ' + jsonParse[i].profil;
+                var m = L.marker([
+                jsonParse[i].lat,
+                jsonParse[i].lng
+                ], {icon: myIcon}).bindPopup(popup);
+                markerClusters.addLayer(m);
+                }
+
+                map.addLayer(markerClusters);
+            });
+        }
+    </script>
+{% endblock %}

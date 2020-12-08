@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  {{ form_title }}
+{% endblock %}
+
+{% block body %}
+  <div class="container mt-5">
+    <h1>{{ form_title }}</h1>
+
+            {% for message in app.flashes('message') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+    {{ form_start(form) }}
+        {{ form_label(form.libelle) }}
+        {{ form_widget(form.libelle) }}
+
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+
+        {{ form_label(form.imageFile) }}
+        {{ form_widget(form.imageFile) }}
+
+        {{ form_widget(form.nom, {'attr': {'class': 'd-none'}}) }}
+        {{ form_widget(form.created_at, {'attr': {'class': 'd-none'}}) }}
+        {{ form_widget(form.updated_at, {'attr': {'class': 'd-none'}}) }}
+        {{ form_widget(form.user, {'attr': {'class': 'd-none'}}) }}
+
+        <div class="text-center">
+          <img src="" alt="" class="preview img-thumbnail img-fluid" height="200" /> 
+        </div>
+    {{ form_end(form) }}
+
+     <div id="container"></div>
+ 
+     <a href="{{ path('media_index') }}" class="btn btn-outline-success btn-sm btn-block mt-2">back to list</a> 
+  <div class="container mb-5">
+
+    <script>
+      //On ajouter l'attribut 'onchange' sur le bouton inputfile 'media_imageFile_file'
+      media_imageFile_file.setAttribute("onchange","myFunction();");
+
+          function myFunction() {
+            setTimeout(previewFile, 500);
+          }
+
+          function previewFile() {
+            var preview = document.querySelector(".preview");
+            var file = document.querySelector("input[type=file]").files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+              preview.src = reader.result;
+            };
+
+            if (file) {
+  
+
+              reader.readAsDataURL(file);
+            } else {
+              preview.src = "";
+            }
+        }
+    </script>
+{% endblock %}

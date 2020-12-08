@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<style>
+		.z {
+			font-size: 16rem;
+		}
+
+		.b {
+			font-size: 2rem;
+		}
+
+		.vertical-center {
+			min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+			min-height: 100vh; /* These two lines are counted as one :-)       */
+
+			display: flex;
+			align-items: center;
+		}
+
+		.jumbotron {
+			background: rgba(0, 0, 0, 0) !important;
+		}
+	</style>
+{% endblock %}
+
+{% block title %}
+	Le code est
+	{{status_code}}
+{% endblock %}
+
+{% block body %}
+	<div class="container vertical-center">
+		<div class="row">
+			<div class="col-sm">
+				<div class="jumbotron">
+					<h1 class="z">404</h1>
+
+					<p class="b">Désolé, la page que vous recherchez est introuvable...</p>
+					<hr class="my-4">
+					<p class="b">Cliquez sur le bouton ACCUEIL</p>
+
+
+					<a href="{{ path('home_home') }}" class="btn btn-outline-warning">
+						<i class="fas fa-home"></i>
+						ACCUEIL JUSTEUNREGARD</a>
+				</div>
+			</div>
+			<div class="col-sm">
+				<img src="{{ asset("uploads/404/404C.jpg") }}" class="img-fluid" alt="Responsive image">
+			</div>
+		</div>
+	</div>
+{% endblock %}

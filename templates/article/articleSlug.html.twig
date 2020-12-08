@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Article/{{ article.titre }}
+{% endblock %}
+
+{% block body %}
+	<div class="shadow p-3 mb-5 bg-white rounded container mt-5">
+		<div class="jumbotron text-center">
+			<h1 class="display-4 mb-5">{{ article.titre }}</h1>
+			<img src="{{ vich_uploader_asset(article, 'imageFile') | imagine_filter('gd_big') }}" class="mr-3 img-fluid" alt="{{ article.titre }}">
+			<small>
+				<p>Published on
+					{{ article.createdAt | date('d/m/Y à H\\Hi') }}</p>
+			</small>
+			<br>
+			<p class="lead">
+				{{ article.contenu | raw }}
+			</p>
+			<hr class="my-4">
+
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<p>Categories</p>
+						<ul>
+							{% for categorie in article.categorie %}
+								<button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+									{{ categorie.nom }}
+								</button>
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="col">
+						<p>Keywords</p>
+						<ul>
+							{% for motcle in article.motCle %}
+								<button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+									{{ motcle.motcle }}
+								</button>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="shadow p-3 mb-5 bg-white rounded">
+			<div class="text-center mb-5">
+				<h1 class="display-4">Comments</h1>
+				<small>
+					<p>
+						<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+						{{ article.commentaire | length }}
+						comments
+					</p>
+				</small>
+
+			</div>
+
+			<ul class="lead">
+				{% for commentaire in article.commentaire %}
+					<li>{{ commentaire.contenu }}</li>
+
+					<small>
+						<il>Published by
+							{{ commentaire.user.nom }}
+							le
+							{{ commentaire.createdAt|date('d/m/Y à h\\hi') }}</il>
+					</small>
+					<br>
+					<br>
+				{% else %}
+					<il>There are no comment yet !</il>
+				{% endfor %}
+			</ul>
+		</div>
+
+		<div class="shadow p-5 mt-5 bg-white rounded">
+			{% if is_granted('ROLE_USER') %}
+				<h5 class="display-4 text-center mb-5">Add a comment</h5>
+				{{ form(commentaireForm) }}
+					<br>
+					<br>
+				{% endif %}
+
+				<a class="btn btn-outline-dark btn-sm btn-block mt-2" href="{{ path('news_articles_list') }}" role="button">
+					{% trans %}
+					List of articles
+					{% endtrans %}
+				</a>
+				<br>
+			</div>
+		</div>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

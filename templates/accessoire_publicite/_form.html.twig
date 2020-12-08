@@ -1,0 +1,25 @@
+{{ form_start(form) }}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col form-group">
+				{{ form_label(form.nom, 'nom') }}
+				{{ form_widget(form.nom, {'attr': {'class': 'form-control', 'autofocus': 'true'}}) }}
+
+				{{ form_label(form.libelle, 'libelle') }}
+				{{ form_widget(form.libelle, {'attr': {'class': 'form-control'}}) }}
+
+				{{ form_label(form.description, 'description') }}
+				{{ form_widget(form.description, {
+						'attr': {'class': 'form-control', 'rows': '5'}
+						}) }}
+
+				{{ form_label(form.imageFile, 'imageFile') }}
+				{{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+
+				{{ form_widget(form.created_at, {'attr': {'class': 'form-control d-none'}}) }}
+				{{ form_widget(form.updated_at, {'attr': {'class': 'form-control d-none'}}) }}
+				{{ form_widget(form.user, {'attr': {'class': 'form-control d-none'}}) }}
+			</div>
+		</div>
+	</div>
+{{ form_end(form) }}

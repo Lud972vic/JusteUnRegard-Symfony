@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ form_title }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+
+		<h1>{{ form_title }}</h1>
+		<div class="row">
+			<div class="col">
+				<div class="card" style="width: 36rem;">
+					<img class="card-img-top" src="{{ asset ("uploads/images/featured/") }}{{ accessoirepublicite.nom }}" alt="{{ accessoirepublicite.libelle }}">
+
+					<div class="card-body">
+						<h5 class="card-title">{{ accessoirepublicite.libelle }}</h5>
+						<p class="card-text">{{ accessoirepublicite.description | raw }}</p>
+
+						<div class="card">
+							<div class="card-header">
+								Featured
+							</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">Banni
+									{{ accessoirepublicite.banni ? 'Yes' : 'No' }}</li>
+								<li class="list-group-item">Created at
+									{{ accessoirepublicite.createdAt ? accessoirepublicite.createdAt|date('Y-m-d H:i:s') : '' }}</li>
+								<li class="list-group-item">Updated at
+									{{ accessoirepublicite.updatedAt ? accessoirepublicite.updatedAt|date('Y-m-d H:i:s') : '' }}</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="btn-group" role="group" aria-label="media">
+					<a href="{{ path('accessoire_publicite_index') }}" class="btn btn-outline-success">
+						<i class="fas fa-home"></i>
+						back to list</a>
+					<a href="{{ path('accessoirepublicite_edit', {'id': accessoirepublicite.id}) }}" class="btn btn-outline-warning">
+						<i class="far fa-edit"></i>
+						edit</a>
+					<form method="post" action="{{ path('accessoirepublicite_delete', {'id': accessoirepublicite.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+						<input type="hidden" name="_method" value="DELETE">
+						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ accessoirepublicite.id) }}">
+						<button class="btn btn-outline-danger">
+							<i class="far fa-trash-alt"></i>
+							Delete</button>
+					</form>
+				</div>
+			</div>
+		</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+<div class="row">
+	<a href="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}" class="btn btn-sm btn-secondary">
+		<i class="fas fa-eye"></i>
+		Zoom</a>
+</div>
+
+{# Si l'utilisateur est connecté... #}
+{% if app.user %}
+	<div
+		class="row">
+		{# Bannir un média #}		
+		{% if is_granted('ROLE_MODERATOR') %}
+			<a href="{{ path('media_banni', {'id': medium.id}) }}" onclick="getMediaID('{{medium.id }}');" 
+			class="btn btn-sm btn-secondary js-bannir"><i class="fas fa-ban"></i><span> Bannir</span></a>
+		{% endif %}
+
+		{# Si l'utilisateur a liké le média, on mets un pouce plein, sinon vide #}
+		<a href="{{ path('media_likeunlike', {'id': medium.id}) }}" class="btn btn-sm btn-secondary js-like">
+			{% if app.user and medium.isLikedByUser(app.user) %}
+				<i class="fas fa-thumbs-up"></i>
+			{% else %}
+				<i class="far fa-thumbs-up"></i>
+			{% endif %}
+			<span class="js-likes">
+				{{ medium.mediaLikes | length }}</span>
+			<span class="js-label">
+				J'aime</span>
+		</a>
+
+		{# Les commentaies des utilisateurs #}
+		<a href="{{ path('home_photographiezoom', {'id': medium.id}) }}" class="btn btn-sm btn-secondary">
+			<i class="fas fa-comments"></i>
+			Comments</a>
+	</div>
+
+	{# Les liens vers les réseaux sociaux des utilisateurs #}
+	<div class="row">
+		{% if medium.user.getUrlCompteInstagram() %}
+			<a href="{{ medium.user.getUrlCompteInstagram() }}" target="_blank" class="btn btn-sm btn-secondary">
+				<i class="fab fa-instagram"></i>
+			</a>
+		{% endif %}
+
+		{% if medium.user.getUrlCompteFacebook() %}
+			<a href="{{ medium.user.getUrlCompteFacebook() }}" target="_blank" class="btn btn-sm btn-secondary">
+				<i class="fab fa-facebook-square"></i>
+			</a>
+		{% endif %}
+
+		{% if medium.user.getUrlCompteAutre() %}
+			<a href="{{ medium.user.getUrlCompteAutre() }}" target="_blank" class="btn btn-sm btn-secondary">
+				<i class="fas fa-network-wired"></i>
+			</a>
+		{% endif %}
+	</div>
+{% endif %}

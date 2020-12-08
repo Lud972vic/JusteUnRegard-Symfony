@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JusteUnRegard - Mur de ventes
+{% endblock %}
+
+{% block stylesheets %}
+	{# Supprimer les paddings de certains elements, utiliser pour coller les photos sur le mur #}
+	<style>
+		.no-padding > [class*="col-"] {
+			padding-right: 0 !important;
+			padding-left: 0 !important;
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<!-- Début : Mur de publicités-->
+	<!--
+							    - gallery-block, cards-gallery : Voir, le fichier CSS cards-gallery.css
+							    - container-fluid : La classe container-fluid permet à la grille d'occuper toute la largeur
+							    - jumbotron : Permet d'afficher un élément graphique que l'on place généralement en haut de page, notre titre Mur de photo...
+							    -->
+		<section class="gallery-block cards-gallery"> <div class="container-fluid">
+			<div class="shadow jumbotron text-center">
+				<h2>Mur de ventes</h2>
+				<p>Nos adhérents et leurs ventes</p>
+			</div>
+
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+            {% endfor %}
+
+			<div class="row no-padding">
+				{% for vente in ventes %}
+					<!--xs 1 image, sm 2 images, md 3 images et lg 6 images-->
+					<div
+						class="col-sm-6 col-md-4 col-lg-2">
+						<!--
+						                        - Site avec les explications : https://o7planning.org/fr/11971/tutoriel-bootstrap-card
+						                        - card : est containeur de contenu
+						                        - border-0 : on retire le border
+						                        - transform-on-hover : Voir, le fichier CSS cards-gallery.css
+						                        - card-body cardBodyNone : partie ou on met le texte -> h6, details, summary, a
+						                        - details et summary :
+						                            L'élément HTML <details> est utilisé comme un outil permettant de révéler une information.Un résumé ou un intitulé peuvent être fournis grâce à un élément <summary>.
+						                            La plupart du temps, le contrôle utilisé pour cet élément est un triangle qui est tourné ou tordu afin d'indiquer
+						                            si l'élément est révélé ou non. Si le premier élément fils de l'élément <details> est un élément <summary>,
+						                            c'est le contenu de ce dernier qui est utilisé comme intitulé pour le contenu à révéler (l'intitulé est donc toujours visible).
+						                        - text-secondary et text-muted : couleur du texte -> titre, auteur & description
+						                        - card-title et card-text : les contenus
+						                        -->
+						<div class="rotate js-user-info" data-is-authenticated="{{ vente.user.email }}">
+							<div class="card border-0 transform-on-hover">
+								<img data-src="{{ asset ("uploads/images/featured/") }}{{ vente.nom }}" alt="{{ vente.libelle }}" class="lazyload card-img-top imgMurPhoto">
+
+								<div class="card-body cardBodyNone">
+									<h6 class="card-title text-secondary">{{ vente.libelle }}</h6>
+									<details class="card-text text-muted">
+										<summary>{{ vente.libelle | raw }}...</summary>
+										<p>{{ vente.description | raw }}</p>
+									</details>
+									<hr>
+									<p>
+										<small>Catégorie :
+											{{ vente.typeAnnonce.libelle | raw }}</small>
+									</p>
+									<p>
+										<small>Prix :
+											{{ vente.prix | raw }}
+											€</small>
+									</p>
+									{%  if vente.disponibilite != 1 %}
+										<img src="{{ asset ("uploads/reseauxsociaux/end.jpg") }}" alt="sold-out" height="50">
+									{% endif %}
+									<p>
+										<small>Adhérent :
+											{{ vente.user.nom | raw }}</small>
+									</p>
+									<p>
+										<small>Posté le
+											{{ vente.createdAt | date("d/m/Y") }}</small>
+									</p>
+
+									{%  if app.user and vente.disponibilite == 1 %}
+										<a href="{{ path('home_accessoirepublicitezoom', {'id': vente.id}) }}" class="btn btn-sm btn-outline-warning">
+											<i class="far fa-eye"></i>
+											Prise de contact</a>
+									{% elseif vente.disponibilite == 1 %} 
+										<a class="btn btn-sm btn-outline-warning" href="{{ path('app_login') }}"><i class="fas fa-sign-out-alt"></i></i>
+										Connectez-vous, pour une prise de contact !</a>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+	<!-- Fin : Mur de publicités-->
+
+	<div class="navigation">
+		{{ knp_pagination_render(ventes) }}
+	</div>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notre équipe{% endblock %}
+
+{% block body %}
+    <!-- Début : Container -->
+    <div class="container mt-5">
+        <!-- Début : Introduction -->
+        <div class="row">
+            <div class="col-lg-6">
+                <img class="img-fluid rounded mb-5" src="{{asset('uploads/about/groupe.jpg')}}" alt="Notre équipe">
+            </div>
+            <div class="col-lg-6">
+                <h2>JusteUnRegard</h2>
+                <p>JusteUnRegard est un média dédié à la photographie</p>
+                <p>Vous pourrez retrouver sur ce site des actualités liées au monde de la photo ainsi que des
+                    découvertes et des
+                    conseils pratiques pour mieux utiliser votre matériel photo.
+                </p>
+            </div>
+        </div>
+        <!-- Fin : Introduction -->
+
+        <!-- Début : Notre équipe -->
+        <h2>Les membres de l'équipe</h2>
+        <div class="row">
+            <!--
+            - Site avec les explications : https://o7planning.org/fr/11971/tutoriel-bootstrap-card
+            - card : est containeur de contenu
+            - card-body : partie où on met les différents contenants
+            - text-secondary, text-dark et text-muted : couleur des contenus textes
+            - card-title, card-subtitle et card-text : les contenus textes
+            - h-100 : varie entre 25% et 100% de la hauteur de la card
+            -->
+            <div class="col-lg-4 mb-5">
+                <div class="card h-100 text-center">
+                    <img class="card-img-top" src="{{asset('uploads/about/ludovic.png')}}" alt="Portrait de Ludovic">
+                    <div class="card-body">
+                        <h4 class="card-title text-dark">Ludovic</h4>
+                        <h6 class="card-subtitle mb-2 text-secondary">Concepteur Développeur d’Applications</h6>
+                        <p class="card-text text-muted">Ludovic est créateur du site JusteUnRegard. Il aime la
+                            photographie, le voyage et partage sa passion de la photo sur JusteUnRegard.</p>
+                    </div>
+                    <div class="card-footer">
+            <span title="En cliquant sur le lien du mail, votre messagerie par défaut va s’ouvrir.">
+              <a class="text-muted"
+                 href="mailto:macomakrel@justeunregard.org?subject=Mail du site Juste Un Regard&body=Bonjour,">ludovic@justeunregard.org</a>
+            </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-5">
+                <div class="card h-100 text-center">
+                    <img class="card-img-top" src="{{asset('uploads/about/loïc.png')}}" alt="Portrait de Loïc">
+                    <div class="card-body">
+                        <h4 class="card-title text-dark">Loïc</h4>
+                        <h6 class="card-subtitle mb-2 text-secondary">Designer & Développeur Web</h6>
+                        <p class="card-text text-muted">Loïc aime avant tout le design, mais aussi sa passion pour le
+                            code.</p>
+                    </div>
+                    <div class="card-footer">
+            <span title="En cliquant sur le lien du mail, votre messagerie par défaut va s’ouvrir.">
+              <a class="text-muted"
+                 href="mailto:loïc@justeunregard.org?subject=Mail du site Juste Un Regard&body=Bonjour,">loïc@justeunregard.org</a>
+            </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Fin : Notre équipe -->
+
+        <!--Début : Nos clubs -->
+        <h2>Les clubs photos partenaires</h2>
+        <div class="row">
+            <div class="col-lg-2 col-sm-2">
+                <!--Ouvre le lien extérieur MJC dans un nouvel onglet-->
+                <a href="http://mjcmeaux.org/arts-plastiques-et-visuels/photographie-2/" target="_blank">
+                    <img class="img-fluid" src="{{asset('uploads/clubs/mjc.png')}}" alt="Photographie | MJC DE MEAUX">
+                </a>
+            </div>
+            <div class="col-lg-2 col-sm-2 mb-2">
+                <a href="https://fr-fr.facebook.com/clubphotoneuillyplaisance" target="_blank">
+                    <img class="img-fluid" src="{{asset('uploads/clubs/ClubPhotoDeNeuillyPlaisance.jpg')}}" alt="Club Photo de Neuilly-Plaisance" width="100">
+                </a>
+            </div>
+        </div>
+        <!-- Fin : Nos clubs -->
+    </div>
+    <!-- Fin : Container -->
+{% endblock %}

@@ -1,0 +1,26 @@
+# See dos how to configure the bundle: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+    filter_sets:
+        # name our filter set "gd_ludo"
+        gd_little:
+            quality: 100
+            filters:
+                fixed:
+                    width: 400
+                    height: 300
+                watermark_image:
+                    image: public/uploads/logo/watermark.png
+                    size: 0.1
+                    position: bottomright
+
+        gd_big:
+            quality: 100
+            filters:
+                downscale:
+                    max: [ 1280, 720 ]
+                watermark_image:
+                    image: public/uploads/logo/watermark.png
+                    size: 0.1
+                    position: bottomright

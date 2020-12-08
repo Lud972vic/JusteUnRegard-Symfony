@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JusteUnRegard - Mur de photographie{% endblock %}
+
+{% block stylesheets %}
+{# Supprimer les paddings de certains elements, utiliser pour coller les photos sur le mur #}
+    <style>
+        .no-padding > [class*="col-"] {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- Début : Mur de photo-->
+    <!--
+    - gallery-block, cards-gallery : Voir, le fichier CSS cards-gallery.css
+    - container-fluid : La classe container-fluid permet à la grille d'occuper toute la largeur
+    - jumbotron : Permet d'afficher un élément graphique que l'on place généralement en haut de page, notre titre Mur de photo...
+    -->
+    <section class="gallery-block cards-gallery">
+        <div class="container-fluid">
+            <div class="shadow jumbotron text-center">
+                <h2>Mur de photographie de {{ nom }}</h2>
+                <p>Nos adhérents et leurs talents</p>
+            </div>
+
+            <div class="row no-padding">
+            {% for medium in medias %}
+                <!--xs 1 image, sm 2 images, md 3 images et lg 6 images-->
+                    <div class="col-sm-6 col-md-4 col-lg-2">
+                        <!--
+                    - Site avec les explications : https://o7planning.org/fr/11971/tutoriel-bootstrap-card
+                    - card : est containeur de contenu
+                    - border-0 : on retire le border
+                    - transform-on-hover : Voir, le fichier CSS cards-gallery.css
+                    - card-body cardBodyNone : partie ou on met le texte -> h6, details, summary, a
+                    - details et summary :
+                        L'élément HTML <details> est utilisé comme un outil permettant de révéler une information.Un résumé ou un intitulé peuvent être fournis grâce à un élément <summary>.
+                        La plupart du temps, le contrôle utilisé pour cet élément est un triangle qui est tourné ou tordu afin d'indiquer
+                        si l'élément est révélé ou non. Si le premier élément fils de l'élément <details> est un élément <summary>,
+                        c'est le contenu de ce dernier qui est utilisé comme intitulé pour le contenu à révéler (l'intitulé est donc toujours visible).
+                    - text-secondary et text-muted : couleur du texte -> titre, auteur & description
+                    - card-title et card-text : les contenus
+                    -->
+                        <div class="rotate">
+                            <div class="card border-0 transform-on-hover">
+                                {# <img data-src="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}"  alt="{{ medium.libelle }}"
+                                    class="lazyload card-img-top imgMurPhoto"> #}
+
+
+                                    {% if medium.typeFichier == 'image/jpeg' %}
+                                        <img class="lazyload card-img-top imgMurPhoto" src="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}" alt="{{ medium.libelle }}">
+                                    {% else %}
+                                        <video controls class="lazyload card-img-top imgMurPhoto">
+                                            <source src="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}" alt="{{ medium.libelle }}" type="{{ medium.typeFichier }}">
+                                            Sorry, your browser doesn't support embedded videos.
+                                        </video>
+                                    {% endif %}
+
+
+
+                                <div class="card-body cardBodyNone">
+                                    <h6 class="card-title text-secondary">{{ medium.libelle }}</h6>
+                                    <details class="card-text text-muted">
+                                        <summary>{{ medium.libelle | raw }}...</summary>
+                                        <p>{{ medium.description | raw }}</p>
+                                    </details>
+                                    <hr>
+                                        <div class="btn-group-vertical" role="group" aria-label="Infos membre">
+                                            <button type="button" class="btn btn-sm btn-outline-danger">
+                                                <a href="{{ path('media_show_user', {'id': medium.user.id }) }}">
+                                                    Je suis
+                                                        {% if medium.user.civilite == "Monsieur" %}
+                                                            <i class="fas fa-male"></i>
+                                                        {% else %}
+                                                            <i class="fas fa-female"></i>
+                                                        {% endif %}
+                                                        {{ medium.user.nom | raw }} voici, mes photos
+                                                </a>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-warning">
+                                                <a href="{{ path('media_show_category', {'id': medium.categorie.id }) }}">{{ medium.getCategorie() }}</a>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-muted disabled"><small>Posté le {{ medium.createdAt | date("d/m/Y") }}</small></button>
+                                            <button type="button" class="btn btn-sm btn-outline-success">
+                                                <a href="{{ path('media_show_category', {'id': medium.categorie.id }) }}"><a href="{{ path('home_home') }}"><span>Accueil <i class="fas fa-undo"></i></span></a></a>
+                                            </button>
+                                        </div>
+
+                                        {% include 'partials/partialsBottomActionUser.html.twig' %} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Fin : Mur de photo-->
+
+        {# <div class="navigation">
+            {{ knp_pagination_render(medias) }}
+        </div> #}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/axios.min.js') }}"></script>
+    <script>
+        function onClickBtnLike(event){
+            event.preventDefault();
+            const url = this.href;
+            const spanCount = this.querySelector('span.js-likes');
+            const icone = this.querySelector('i');
+
+            axios.get(url).then(function(response){
+                spanCount.textContent = response.data.likes;
+
+                if(icone.classList.contains('fas')) {
+                    icone.classList.replace('fas','far');
+                }else{
+                    icone.classList.replace('far','fas');
+                }
+            }).catch(function(error){
+                if(error.response.status === 403){
+                    window.alert("Connectez-vous pour liker :-)");
+                    }
+                })
+            };
+    
+        document.querySelectorAll('a.js-like').forEach(function(link){  
+                link.addEventListener('click', onClickBtnLike);
+        });
+    </script>
+{% endblock %}

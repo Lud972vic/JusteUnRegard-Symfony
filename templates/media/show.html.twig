@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ form_title }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+
+		<h1>{{ form_title }}</h1>
+		<div class="row">
+			<div class="col">
+				<div class="card" style="width: 36rem;">
+					{% if medium.typeFichier == 'image/jpeg' %}
+						<img class="card-img-top" src="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}" alt="{{ medium.libelle }}">
+					{% else %}
+						<video controls>
+							<source src="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}" alt="{{ medium.nom }}" type="{{ medium.typeFichier }}">
+							Sorry, your browser doesn't support embedded videos.
+						</video>
+					{% endif %}
+
+					<div class="card-body">
+						<h5 class="card-title">{{ medium.libelle }}</h5>
+						<p class="card-text">{{ medium.description | raw }}</p>
+
+						<div class="card">
+							<div class="card-header">
+								Featured
+							</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">Taille
+									{{ medium.taille }}</li>
+								<li class="list-group-item">Type de fichier
+									{{ medium.typeFichier }}</li>
+								<li class="list-group-item">Duré média
+									{{ medium.dure }}</li>
+								<li class="list-group-item">Notorite
+									{{ medium.notorite }}</li>
+								<li class="list-group-item">Banni
+									{{ medium.banni ? 'Yes' : 'No' }}</li>
+								<li class="list-group-item">Banni par
+									{{ medium.banniParUser }}</li>
+								<li class="list-group-item">Created at
+									{{ medium.createdAt ? medium.createdAt|date('Y-m-d H:i:s') : '' }}</li>
+								<li class="list-group-item">Updated at
+									{{ medium.updatedAt ? medium.updatedAt|date('Y-m-d H:i:s') : '' }}</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="btn-group" role="group" aria-label="media">
+					<a href="{{ path('media_index') }}" class="btn btn-outline-success">
+						<i class="fas fa-home"></i>
+						back to list</a>
+					<a href="{{ path('media_edit', {'id': medium.id}) }}" class="btn btn-outline-warning">
+						<i class="far fa-edit"></i>
+						edit</a>
+					<form method="post" action="{{ path('media_delete', {'id': medium.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+						<input type="hidden" name="_method" value="DELETE">
+						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ medium.id) }}">
+						<button class="btn btn-outline-danger">
+							<i class="far fa-trash-alt"></i>
+							Delete</button>
+					</form>
+				</div>
+			</div>
+		</div>
+{% endblock %}

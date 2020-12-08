@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Merci de vous avoir inscrit sur le site JusteUnRegard
+{% endblock %}
+
+{% block body %}
+	<main role="main">
+		<div class="container">
+			<div class="py-5 text-center">
+				<img src="{{ asset('uploads/background/search.gif') }}" height="300"/>
+				<h1>
+					Les résultats de votre recherche
+				</h1>
+
+				{% if medias|length == 0 %}
+					<p class="text-danger">Aucun résultat de trouvé.</p>
+				{% else %}
+					<table class="table table-striped table-secondary">
+						<thead>
+							<tr>
+								<th scope="col">libelle</th>
+								<th scope="col">media</th>
+								<th scope="col">description</th>
+								<th scope="col">format</th>
+								<th scope="col">crée le</th>
+								<th scope="col">lien</th>
+							</tr>
+						</thead>
+						<tbody>
+							<p class="text-success">Il y a {{ medias|length  }} médias de trouver.</p>
+							{% for media in medias %}
+								<tr>
+									<td>{{ media.libelle | raw }}</td>
+									<td>
+										<div class="card imgBigCover">
+											{% if media.typeFichier == 'image/jpeg' %}
+												<img class="card-img-top imgBigCover" src="{{ asset ("uploads/images/featured/") }}{{ media.nom }}" alt="{{ media.libelle }}">
+											{% else %}
+												<video controls class="imgBigCover">
+													<source src="{{ asset ("uploads/images/featured/") }}{{ media.nom }}" alt="{{ media.nom }}" type="{{ media.typeFichier }}">
+													Sorry, your browser doesn't support embedded videos.
+												</video>
+											{% endif %}
+										</div>
+									</td>
+									<td>{{ media.description | raw }}</td>
+									<td>{{ media.typeFichier| raw }}</td>
+									<td>{{ media.createdAt ? media.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+									<td>
+										<a href="{{ asset ("uploads/images/featured/") }}{{ media.nom }}" download>
+											<i class="fas fa-download"></i>
+										</a>
+									</td>
+								</tr>
+							{% endfor %}
+						{% endif %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+{% endblock %}

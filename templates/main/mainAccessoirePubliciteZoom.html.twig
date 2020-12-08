@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	accessoirepublicite/{{ accessoirepublicite.libelle }}
+{% endblock %}
+
+{% block body %}
+	<div class="shadow p-3 mb-5 bg-white rounded container mt-5">
+		<div class="jumbotron text-center">
+			<div class="shadow p-3 mb-5 bg-white rounded">
+				<img src="{{ vich_uploader_asset(accessoirepublicite, 'imageFile') | imagine_filter('gd_big') }}" class="mr-3 img-fluid" alt="{{ accessoirepublicite.libelle }}">
+			</div>
+			<div class="shadow p-3 mb-5 bg-white rounded">
+				<small class="text-right">
+					<p>Posté par
+						{{ accessoirepublicite.user.nom }}
+						le
+						{{ accessoirepublicite.createdAt|date('d/m/Y à h\\hi') }}</p>
+				</small>
+
+				<h1>Référence :
+					{{ accessoirepublicite.libelle | raw }}</h1>
+				<p>{{ accessoirepublicite.description | raw }}</p>
+				<p>Catégorie :
+					{{ accessoirepublicite.typeannonce | raw }}</p>
+			</p>
+			{%  if accessoirepublicite.disponibilite != 1 %}
+				<img src="{{ asset ("uploads/reseauxsociaux/end.jpg") }}" alt="sold-out" height="50">
+			{% endif %}
+			<p></p>
+			<p>Prix :
+				{{ accessoirepublicite.prix | raw }}
+				€</p>
+		</div>
+		{%  if accessoirepublicite.disponibilite == 1 %}
+			<a href="{{ path('home_home') }}" class="btn btn-sm btn-outline-secondary">Annuler</a>
+			<button type="button" class="btn btn-sm btn-outline-warning" data-toggle="modal" data-target="#modale-contact">Envoyer un message</button>
+		{% endif %}
+	</div>
+</div>
+
+
+<div class="modal fade" id="modale-contact" tabindex="-1" aria-labelledby="modale-contact" aria-hidden="true">
+	<div class="modal-dialog">
+		{{ form_start(form) }}
+		<div class="modal-content">
+			<div class="modal-header">Prise de contact</div>
+			<div class="modal-body">
+				{{ form_widget(form.title, {'value': accessoirepublicite.libelle | raw }) }}
+				{{ form_row(form.email, {'value': app.user.email | raw }) }}
+				{{ form_row(form.message, {'value': accessoirepublicite.description | raw }) }}
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+				<button class="btn btn-warning">Envoyer le message</button>
+			</div>
+		</div>
+		{{ form_end(form) }}
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

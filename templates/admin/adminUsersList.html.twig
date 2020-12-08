@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Users list
+{% endblock %}
+
+{% block body %}
+	<div class="shadow p-3 mb-5 bg-white rounded container mt-5">
+		<div class="jumbotron text-center">
+			<h1 class="display-4 mb-5">Users list</h1>
+
+			{% for message in app.flashes('message') %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+			<table class="table table-striped">
+				<thead>
+					<th>Id</th>
+					<th>Email</th>
+					<th>Rôles</th>
+					{# <th>Articles</th> #}
+					<th>Actions</th>
+				</thead>
+				{% for user in usersList %}
+					<tbody>
+						{#On boucle sur les utilisateurs#}
+						<td>{{ user.id }}</td>
+						<td>{{ user.email }}</td>
+						<td>
+							<span class="d-inline-block" data-toggle="popover" data-content="Disabled popover">
+								<button class="btn btn-outline-dark" style="pointer-events: none;" type="button">
+									{% for role in user.roles %}
+										{% if  role == "ROLE_USER" %}
+											User
+										{% elseif role == "ROLE_EDITOR" %}
+											Editor
+										{% elseif role == "ROLE_MODERATOR" %}
+											Moderator
+										{% elseif role == "ROLE_ADMIN" %}
+											Administrator
+										{% endif %}
+									{% endfor %}
+								</button>
+							</span>
+						</td>
+						{# <td>{{ user.articles | length }}</td> #}
+						<td>
+							<a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="btn btn-outline-danger">Edit</a>
+						</td>
+					{% else %}
+						<tr>
+							<td colspan="5">There is no registered user</td>
+						</tr>
+					</tbody>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nous contacter
+{% endblock %}
+
+{% block body %}
+	<!-- Début : Container -->
+	<div class="container">
+		<h1 class="mt-5">Nous contacter</h1>
+
+		{% for message in app.flashes('message') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<div
+			class="row">
+			<!-- Début : Carte google -->
+			<div class="col-lg-8 mb-5">
+				<!-- Embedded Google Map -->
+				<!--
+								                L'élément HTML <iframe> représente un contexte de navigation imbriqué qui permet en fait d'obtenir une page HTML intégrée dans la page courante.
+								                allowfullscreen : Cet attribut, lorsqu'il vaut true(vrai) indique que l'iframe intégré peut être passé en plein écran via la méthodeElement.requestFullscreen().
+								                -->
+					<div
+					class="embed-responsive embed-responsive-16by9"> {# <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2619.2208779883335!2d2.865519416468789!3d48.96831967929838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e8a056fbb4c661%3A0x6c2590e6fb3c1a0f!2s101%20Rue%20Henri%20Barbusse%2C%2077124%20Cr%C3%A9gy-l%C3%A8s-Meaux!5e0!3m2!1sfr!2sfr!4v1579379612160!5m2!1sfr!2sfr" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen=""> width="600" height="450" style="border:0" allowfullscreen></iframe> #}
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2625.3885935880703!2d2.5881172514307136!3d48.85079990909315!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e60e2a9f9dc573%3A0x86124a9f1a778682!2sAFPA!5e0!3m2!1sfr!2sfr!4v1602574223464!5m2!1sfr!2sfr" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+				</div>
+			</div>
+			<!-- Fin : Carte google -->
+
+			<!-- Début : Notre adresse -->
+			<div class="col-lg-4 mb-4">
+				<h3>Notre adresse</h3>
+				<p>
+					JusteUnRegard
+					<br>
+					77114 Crégy-les-Meaux
+					<br><br>
+					Téléphone : +33 6 59 00 49 54
+				</p>
+			</div>
+			<!-- Fin : Notre adresse -->
+		</div>
+
+		<!-- Début : Formulaire de quisommesnous -->
+		<div class="row">
+			<div class="col-lg-8 mb-5">
+				<h3>Envoyer-nous un message</h3>
+				{{ form(form) }}
+				</div>
+			</div>
+			<!-- Fin : Formulairequisommesnousontact -->
+		</div>
+		<!-- Fin : Container -->
+	{% endblock %}

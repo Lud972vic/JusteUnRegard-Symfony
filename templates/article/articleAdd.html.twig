@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adding an article
+{% endblock %}
+
+{% block stylesheets %}
+	<link href="{{ asset('css/articleAdd.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="h3 font-weight-normal mt-5 text-center">Adding an article</h1>
+
+		{{ form(articleAddFromType) }}
+	</div>
+{% endblock %}

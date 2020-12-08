@@ -1,0 +1,214 @@
+/*** Général ***/
+body {
+  /*Taille de la Nav*/
+  padding-top: 128px;
+  /*Couleur d'arrière plan de chaque page*/
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+
+hr {
+  /*Ligne de séparation*/
+  background-color: rgb(255, 221, 78);
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.nav-link_black {
+  color: black !important;
+}
+
+/*Supprimer les paddings de certains elements, utiliser pour coller les photos sur le mur*/
+ /* .no-padding > [class*="col-"] {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}  */
+
+/*** Page Accueil ***/
+.carousel-item {
+  /*Carousel > Ventes et Publicité*/
+  height: 860px;
+  min-height: 300px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.details_white {
+  color: white !important;
+}
+
+.btn {
+  /*Mûr de photographie > Bouton Agrandir*/
+  color: rgb(51, 53, 52);
+  float: right;
+}
+
+.content.bas .btn {
+  /*Bouton sur la 1er vidéo*/
+  color: #ffc107;
+}
+
+.content.bas :hover {
+  /*Bouton sur la 1er vidéo*/
+  color: rgb(51, 53, 52);
+}
+
+.espace {
+  /*Espace haut divers*/
+  margin-top: 0px;
+}
+
+.content.haut {
+  /*Texte*/
+  /* Position the background text */
+  position: absolute;
+  /* At the bottom. Use top:0 to append it to the top */
+  top: 0;
+  /* Black background with 0.5 opacity */
+  background: rgba(0, 0, 0, 0.4);
+  /* Grey text */
+  color: #f1f1f1;
+  /* Full width */
+  width: 100%;
+  /* Some padding */
+  padding: 10px;
+}
+
+.content.bas {
+  /*Texte*/
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 10px;
+  bottom: 40px;
+  margin-bottom: 0px;
+}
+
+.imgMurPhoto {
+  /*Mur de photo
+    https://developer.mozilla.org/fr/docs/Web/CSS/object-fit
+    La propriété CSS object-fit définit la façon dont le contenu d'un élément remplacé (<img> ou <video> par exemple) doit s'adapter à son conteneur en utilisant sa largeur et sa hauteur.
+    Cover :
+    Le contenu remplacé est dimensionné pour maintenir son ratio d'affichage tout en remplissant toute la boîte de contenu.
+    La taille réelle est calculée pour couvrir la zone décrite par la hauteur et la largeur de l'élément.
+    Si les ratios de l'objet et de la boîte ne correspondent pas, le contenu remplacé sera rogné.
+    */
+  /*1rem = 10px https://connect.adfab.fr/dev/dev-front/unite-de-mesure-css-rem*/
+  height: 30rem;
+  object-fit: cover;
+}
+
+.cardBodyNone {
+  /*On masque par defaut le card-body, au passage de la souris on affiche le contenue*/
+  display: none;
+}
+
+.card {
+  margin-bottom: 0px !important;
+}
+
+/*** Page portfolio.php ***/
+.portfolio-item {
+  /*Catégories > Portfolio > Card : margin-bottom*/
+  margin-bottom: 30px;
+}
+
+/*on force la couleur background*/
+.card-body {
+  background-color: white;
+}
+
+/*** Page userprofile.php ***/
+.nav-pills .nav-link.active,
+.card-header {
+  /*Menu*/
+  background-color: rgb(255, 221, 78);
+  color: rgb(51, 53, 52);
+}
+
+#img-upload,
+#video-upload {
+  /*Taille de sa photo*/
+  margin-top: 10px;
+  height: 200px;
+  width: auto;
+}
+
+.btn-file {
+  /*Gérer vos images*/
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type="file"] {
+  /*Gérer vos images*/
+  position: absolute;
+  top: 0px;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
+/*** Page signup.php ***/
+#error_cnx {
+  /*Si pas renseigner, coloration en rouge de l'élèment*/
+  color: orangered;
+}
+
+/*** Page monProfil_ ***/
+.btnMedia {
+  border-left-width: 15px;
+  margin-left: 5px;
+}
+
+/*** Page Contact ***/
+.comments {
+  color: red;
+  text-shadow: red 1px 0 10px;
+}
+
+#contact-form .thank-you {
+  color: green;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 22px;
+}
+
+/*les tests à valider*/
+.buttonPaddingLeft {
+  margin-right: 5px !important;
+}
+
+.center-div {
+  margin: 0 auto;
+}
+
+/*openstreetmap markerClusterGroup*/
+.marker-cluster-small div {
+  background-color: #dc3545 !important;
+}
+
+/* Rotation image sur la page d'accueil*/
+.rotate div img {
+  -webkit-transition: all 0.3s ease;
+  transition: width 0.7s, height 0.7s 0.3s ease;
+}
+ 
+.rotate div:hover img {
+  -webkit-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+}

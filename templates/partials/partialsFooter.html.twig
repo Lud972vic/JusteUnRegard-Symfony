@@ -1,0 +1,59 @@
+<div class="mt-5"></div>
+<footer id="navbarbas" class="mt-5 py-2 navbar-dark bg-dark text-white fixed-bottom">
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col col-8">
+				<p class="m-0 text-right">
+					Copyright &copy; JusteUnRegard (Lud972vic) 77114 Crégy les Meaux
+				</p>
+			</div>
+			<div
+				class="col col-4">
+				<!-- Lien vers les réseaux sociaux -->
+				<a href="#">
+					<img src="{{ asset('uploads/reseauxsociaux/instagram.png') }}" alt="instagram" width="3%"/>
+				</a>
+				<a href="#">
+					<img src="{{ asset('uploads/reseauxsociaux/facebook.png') }}" alt="facebook" width="3%"/>
+				</a>
+				<a href="#">
+					<img src="{{ asset('uploads/reseauxsociaux/twitter.png') }}" alt="twitter" width="3%"/>
+				</a>
+				<p style="display: inline">{% trans %}Legal mentions{% endtrans %}</p>
+				<a href="{{ path('home_legal_notices') }}">
+					<img src="{{ asset('uploads/reseauxsociaux/mentions-legales.png') }}" alt="mentions légales" width="3%"/>
+				</a>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<!-- Début : Les Scripts JS -->
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+
+<!-- DEBUT VUE JS -->
+{# <script src="{{ asset('js/app.js') }}"></script> #}
+<!-- FIN VUE JS -->
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"> </script>
+<script src="{{ asset('js/baguetteBox.min.js') }}"></script>
+<script src="{{ asset('js/fontawesome.all.min.js') }}"></script>
+<script src="{{ asset('js/cookieconsent.min.js') }}"></script>
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/lazyload.min.js') }}"></script>
+<script src="{{ asset('js/sweetalert.min.js') }}"> </script>
+
+{# <script type="text/javascript" src="{{ asset('js/leaflet.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/leaflet.markercluster.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/leaf.js') }}"></script> #}
+
+<script>
+	lazyload();
+</script>
+<!-- Fin : Les Scripts JS -->
+
+<!-- Mode carousel quand on clique sur une image & Affichage la partie card-body quand la souris se trouve sur une image du mur de photo -->
+<script src="{{ asset('js/card-body.js') }}"></script>
+{# <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" /> #}
+
+<!-- Include cookiealert script -->
+<script src="{{ asset('js/cookiealert.js') }}"></script>

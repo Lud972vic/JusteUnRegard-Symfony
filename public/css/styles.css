@@ -1,0 +1,49 @@
+p {
+  color: grey;
+}
+
+a {
+  color: black;
+}
+
+.image_article {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px;
+  padding: 5px;
+  width: 50%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.image_article_mini {
+  padding: 5px; /* Some padding */
+  width: 100%;
+  height: auto;
+}
+
+.imgSmallCover {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.imgBigCover {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
+
+.vich-image img {
+  display: none;
+  /* display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px;
+  height: 100px;
+  object-fit: cover; */
+}
+
+/* On masque le bouton Delete du formulaire */
+#media_imageFile_delete, #accessoire_publicite_imageFile_delete {
+  display: none;
+}

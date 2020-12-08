@@ -1,0 +1,266 @@
+easy_admin:
+    # On définit le nom de l'interface d'administration
+    site_name: 'Administration du site JUR'
+    # On définit l'affichage de l'utilisateur
+    user:
+        display_name: true
+        display_avatar: true
+    design:
+        # Ces lignes sont utiles pour CKEditor
+        form_theme:
+            - "@EasyAdmin/form/bootstrap_4.html.twig"
+            - "@FOSCKEditor/Form/ckeditor_widget.html.twig"
+        # Ces lignes définiront notre menu
+        menu:
+            - { route: 'home_home', label: 'Accueil du site', icon: 'home' }
+            - { label: 'Articles' }
+            - { entity: 'Article', label: 'Articles', icon: 'book' }
+            - { entity: 'Categorie', label: 'Catégories', icon: 'tag' }
+            - { entity: 'MotCle', label: 'Mots Clés', icon: 'tag' }
+
+            - { label: 'Villes & Pays' }
+            - { entity: 'Ville', label: 'Villes', icon: 'tag' }
+            - { entity: 'Pays', label: 'Pays', icon: 'tag' }
+            
+            - { label: 'Utilisateurs & Civilités & Profil' }
+            - { entity: 'User', label: 'Utilisateurs', icon: 'user' }
+            - { entity: 'Civilite', label: 'Civilités', icon: 'user' }
+            - { entity: 'Profil', label: 'Profils', icon: 'user' }
+
+            - { label: 'Medias & Type' }
+            - { entity: 'Media', label: 'Medias', icon: 'user' }
+            - { entity: 'Type', label: 'Types', icon: 'user' }
+
+            - { label: 'Annonces' }
+            - { entity: 'AccessoirePublicite', label: 'Accessoires et Publicités', icon: 'user' }
+            - { entity: 'TypeAnnonce', label: 'Annonces', icon: 'user' }
+
+    formats:
+        # Ici on définit le format des dates
+        datetime: 'd/m/Y à H:i'
+
+    entities:
+        Article:
+            # Correspond au fichier Article.php
+            class: App\Entity\Article
+            # On définit ci-dessous le contenu de la liste qui affichera les articles et les critères de tri
+            list:
+                fields:
+                    - id
+                    - titre
+                    # Le champ ci-dessous affichera l'image de l'article
+                    - { property: 'image', label: 'Image', type: 'image', base_path: '%app.path.featured_images%' }
+                    - { property: 'created_at', label: 'Créé' }
+                    # Les catégories et les mots-clé sont listés ci-dessous
+                    - { property: 'categorie', label: 'Catégories', type: 'array'}
+                    - { property: 'motCle', label: 'Mots-Clés', type: 'array'}
+                sort: ['created_at', 'desc']
+            # On définit ci-dessous le contenu du formulaire d'ajout ou modification d'article
+            form:
+                fields:
+                    - titre
+                    # Affichage de l'éditeur Wysiwyg
+                    - { property: 'contenu', type: 'fos_ckeditor', type_options: { config_name: 'main_config' }}
+                    # Affichage du champ d'ajout d'image
+                    - { property: 'imageFile', type: 'vich_image', label: 'Image' }
+                    - user
+                    # Les catégories et mots-clés peuvent s'afficher avec une sélection multiple
+                    - { property: 'categorie', label: 'Catégories', type: 'entity', type_options: { class: 'App\Entity\Categorie', multiple: true,by_reference: false, attr: { data-widget: 'select2' }}}
+                    - { property: 'motCle', label: 'Mots Clés', type: 'entity', type_options: { class: 'App\Entity\MotCle', multiple: true,by_reference: false, attr: { data-widget: 'select2' }}}
+
+        User:
+            class: App\Entity\User
+            label: 'Utilisateurs'
+            list:
+                fields:
+                    - id
+                    - email
+                    - civilite
+                    - nom
+                    - prenom
+                    - pseudo
+                    - { property: 'roles', label: 'Rôles', type: json_array}
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['nom', 'asc']
+            form:
+                fields:
+                    - email
+                    - civilite
+                    - nom
+                    - prenom
+                    - pseudo
+                    - { property: 'date_naissance', label: 'Date de naissance' }
+                    - { property: 'description', type: 'fos_ckeditor', type_options: { config_name: 'main_config' }}
+                    - telephone
+                    - url_compte_facebook
+                    - url_compte_instagram
+                    - url_compte_autre
+                    - ville
+                    - { property: 'ville.pays', label: 'Pays', type: 'text'}
+                    - profil
+                    - { property: 'roles', label: 'Rôles', type: choice, type_options: {expanded: true, multiple: true, choices: {'Utilisateur':'ROLE_USER', 'Administrateur':'ROLE_ADMIN', 'Editeur':'ROLE_EDITOR','Modérateur':'ROLE_MODERATOR'}}}
+
+        Categorie:
+            class: App\Entity\Categorie
+            label: 'Categories'
+            list:
+                fields:
+                    - id
+                    - nom
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['created_at', 'desc']
+            form:
+                fields:
+                    - nom
+
+        MotCle:
+            class: App\Entity\MotCle
+            label: 'Mots-Clès'
+            list:
+                fields:
+                    - id
+                    - mot_cle
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['created_at', 'desc']
+            form:
+                fields:
+                    - mot_cle
+        Pays:
+            class: App\Entity\Pays
+            label: 'Pays'
+            list:
+                fields:
+                    - id
+                    - libelle
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['libelle', 'asc']
+            form:
+                fields:
+                    - libelle
+
+        Ville:
+            class: App\Entity\Ville
+            label: 'Villes'
+            list:
+                fields:
+                    - id
+                    - code_postal
+                    - nom
+                    - region
+                    - latitude
+                    - longitude
+                    - eloignement
+                    - { property: 'pays', label: 'Pays' }
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['nom', 'asc']
+            form:
+                fields:
+                    - code_postal
+                    - nom
+                    - region
+                    - latitude
+                    - longitude
+                    - eloignement
+                    - { property: 'pays', label: 'Libelle', type: 'entity', type_options: { class: 'App\Entity\Pays', attr: { data-widget: 'select2' }}}
+
+        Civilite:
+            class: App\Entity\Civilite
+            label: 'Civilités'
+            list:
+                fields:
+                    - id
+                    - civilite
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['created_at', 'desc']
+            form:
+                fields:
+                    - civilite
+
+        Media:
+            class: App\Entity\Media
+            list:
+                fields:
+                    - id
+                    - libelle
+                    - { property: 'nom', label: 'Image', type: 'image', base_path: '%app.path.featured_images%' }
+                    - { property: 'created_at', label: 'Créé' }
+                    - banni
+                    - banni_par_user
+                    - categorie
+                    - taille
+                    - type_fichier
+                sort: ['created_at', 'desc']
+            form:
+                fields:
+                    - libelle
+                    - { property: 'imageFile', type: 'vich_image', label: 'Image' }
+                    - { property: 'description', type: 'fos_ckeditor', type_options: { config_name: 'main_config' }}
+                    - banni
+                    - banni_par_user
+                    - categorie
+                    - taille
+                    - type_fichier
+                    - user
+
+        Profil:
+            class: App\Entity\Profil
+            label: 'Profils'
+            list:
+                fields:
+                    - id
+                    - profil
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['created_at', 'desc']
+            form:
+                fields:
+                    - profil
+
+        Type:
+            class: App\Entity\Type
+            label: 'Types'
+            list:
+                fields:
+                    - id
+                    - type
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['created_at', 'desc']
+            form:
+                fields:
+                    - type  
+
+        TypeAnnonce:
+            class: App\Entity\TypeAnnonce
+            label: 'Annonces'
+            list:
+                fields:
+                    - id
+                    - libelle
+                    - { property: 'created_at', label: 'Créé' }
+                sort: ['created_at', 'desc']
+            form:
+                fields:
+                    - libelle
+
+        AccessoirePublicite:
+            class: App\Entity\AccessoirePublicite
+            list:
+                fields:
+                    - id
+                    - libelle
+                    - { property: 'nom', label: 'Image', type: 'image', base_path: '%app.path.featured_images%' }
+                    - { property: 'created_at', label: 'Créé' }
+                    - disponibilite
+                    - prix
+                    - banni
+                    - typeannonce
+                sort: ['created_at', 'desc']
+            form:
+                fields:
+                    - libelle
+                    - { property: 'imageFile', type: 'vich_image', label: 'Image' }
+                    - { property: 'description', type: 'fos_ckeditor', type_options: { config_name: 'main_config' }}
+                    - disponibilite
+                    - prix
+                    - banni
+                    - typeannonce
+                    - user

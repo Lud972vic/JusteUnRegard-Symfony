@@ -1,0 +1,13 @@
+//Pour tester l'API rapidement, sans outils externes
+GET http://127.0.0.1:8000/api/articles/liste
+
+###
+GET http://127.0.0.1:8000/api/article/lire/14
+
+###
+POST http://127.0.0.1:8000/api/article/ajout
+{"titre": "Ajout API",
+"contenu": "Contenu ajouté API",
+"image": "test.jpg"}
+
+###

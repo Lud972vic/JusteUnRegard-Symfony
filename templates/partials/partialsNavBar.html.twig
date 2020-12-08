@@ -1,0 +1,136 @@
+<!-- Bootstrap CSS -->
+<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet"/>
+<!-- Icône du site et du favoris pour l'utilisateur -->
+<link rel="icon" type="image/png" href="{{asset('uploads/logo/camera.ico')}}"/>
+<!-- Gallery CSS -->
+<link href="{{asset('css/baguetteBox.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('css/cards-gallery.css')}}" rel="stylesheet"/>
+<!-- Styles CSS -->
+<link href="{{asset('css/main.css')}}" rel="stylesheet">
+<link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+<link href="{{asset('css/jur_styles.css')}}" rel="stylesheet"/>
+
+<!-- cookiealert styles -->
+<link href="{{asset('css/cookiealert.css')}}" rel="stylesheet"/>
+
+<!-- Navigation -->
+<nav id="navbarhaut" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="row">
+            <div class="col">
+                <a class="navbar-brand" href="{{ path('home_home') }}">
+                    <img src="{{asset('uploads/logo/camera.ico')}}"
+                         alt="Trouvez l’inspiration. Rejoignez la communauté JusteUnRegard, des photos, des tutoriaux, de la bienveillance..."
+                         width="20%"> <small>JusteUnRegard</small>
+                </a>  
+            </div>  
+        </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {% for locale in locales %}
+                    {% if(locale != app.request.locale) %}
+                        <a class="nav-link text-white" href="{{ path('home_change_locale', {'locale': locale}) }}"><img
+                                    src="{{ asset('uploads/flags/' ~ locale ~ '.png') }}"></a>
+                    {% endif %}
+                {% endfor %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-warning" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-thumbs-up"></i> {% trans %}Be curious{% endtrans %}</a>
+                    </a>
+                       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('lieu') }}"><i class="fas fa-users"></i> {% trans %}Our members{% endtrans %}</a>
+                            <a class="dropdown-item" href="{{ path('home_murdephotographie') }}"><i class="fas fa-camera-retro"></i> {% trans %}The pictures{% endtrans %}</a>
+                            <a class="dropdown-item" href="{{ path('home_murdetutoriel') }}"><i class="fab fa-youtube"></i> {% trans %}The tutorials{% endtrans %}</a>
+                            <a class="dropdown-item" href="{{ path('news_articles_list') }}"><i class="fas fa-newspaper"></i> {% trans %}Item list{% endtrans %}</a>
+                            <hr>
+                            <a class="dropdown-item" href="{{ path('home_murdepublicite') }}"><i class="fas fa-calendar-alt"></i> {% trans %}Ads{% endtrans %}</a>
+                            <a class="dropdown-item" href="{{ path('home_murdevente') }}"><i class="fas fa-shopping-cart"></i> {% trans %}Shopping{% endtrans %}</a>
+                            <a class="dropdown-item" href="{{ path('tchat') }}"><i class="far fa-comments"></i> {% trans %}Tchat{% endtrans %}</a>
+                    </div>
+                </li>
+
+                {% if is_granted('ROLE_USER') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-id-card"></i> {% trans %}My profile{% endtrans %}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('media_index') }}"><i class="fas fa-cogs"></i> {% trans %}User{% endtrans %} - {% trans %}Media management{% endtrans %}</a>
+                            <a class="dropdown-item" href="{{ path('accessoire_publicite_index') }}"><i class="fas fa-cogs"></i> {% trans %}User{% endtrans %} - {% trans %}Accessoiries&Ads management{% endtrans %}</a>
+                            <hr>
+                             <a class="dropdown-item" href="{{ path('user_edit', {'id': app.user.id}) }}"><i class="fas fa-cogs"></i> {% trans %}User{% endtrans %} - {% trans %}Profile{% endtrans %}</a> 
+
+                            {% if is_granted('ROLE_EDITOR') %}
+                                <a class="dropdown-item" href="{{ path('news_article_index') }}"><i class="fas fa-edit"></i> {% trans %}Editor{% endtrans %} - {% trans %}Article management{% endtrans %}</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-warning" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user-shield"></i> {% trans %}Administration{% endtrans %}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('admin_easy_admin') }}"><i class="fas fa-tools"></i> {% trans %}Easy-admin{% endtrans %}</a>
+                            <a class="dropdown-item" href="{{ path('admin_users_list') }}"><i class="fas fa-tools"></i> {% trans %}Quick user management{% endtrans %}</a>
+                        </div>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-lock"></i> {% trans %}Log in{% endtrans %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if not is_granted('ROLE_USER') %}
+                            <a class="dropdown-item" href="{{ path('app_register') }}">{% trans %}Registration{% endtrans %}</a>
+                            <a class="dropdown-item" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt"></i> {% trans %}Sign up{% endtrans %}</a>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_USER') %}
+                            <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> {% trans %}Sign out{% endtrans %}</a>
+                        {% endif %}
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('home_notre_equipe') }}"><i class="fas fa-user-friends"></i> {% trans %}Notre équipe{% endtrans %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('home_nous_contacter') }}"><i class="fas fa-phone-alt"></i> {% trans %}Nous contacter{% endtrans %}</a>
+                </li>
+            </ul>
+
+            {# <form class="form-inline" action="#" method="post">
+                <input class="btn-sm"  name="search" type="search" placeholder="{% trans %}Search{% endtrans %}..."
+                    aria-label="Search">
+                <button class="btn btn-sm btn-success"
+                        type="submit">{% trans %}Search{% endtrans %}</button>
+            </form>  #}
+ 
+            {% if app.request.attributes.get('_route') == 'index' or app.request.attributes.get('_route') == 'home_home' %}
+                {{ form_start(form) }}
+                    <div class="form-row align-items-end" >
+                        {{ form_row(form.motcle) }}
+                        <div class="m-1"></div>
+                        <button class="btn btn-sm btn-success" type="submit">{% trans %}Search{% endtrans %}</button>
+                    </div>
+                {{ form_end(form) }}
+            {% endif %}
+        </div>
+</nav>

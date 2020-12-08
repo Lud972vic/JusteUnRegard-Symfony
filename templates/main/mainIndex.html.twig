@@ -1,0 +1,398 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JusteUnRegard - Accueil{% endblock %}
+
+{% block stylesheets %}
+{# Supprimer les paddings de certains elements, utiliser pour coller les photos sur le mur #}
+    <style>
+        .no-padding > [class*="col-"] {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <!-- Début : Vidéo de bienvenue https://pixabay.com/videos/photography-camera-outdoors-vintage-245/ -->
+        <!--
+        Pour intégrer une vidéo en responsive sur votre site web, il faut commencer par utiliser une div
+        principale portant la classe embed-responsive qui englobera votre contenu.
+        Le 16/9 (seize neuvième) est le format le plus utilisé aujourd’hui sur le web.
+        La plus part des écrans modernes proposent un affichage sur ce ratio.
+        -->
+        <div class="embed-responsive embed-responsive-16by9">
+            <video preload="none" poster="{{asset('uploads/background/background.jpg')}}" controls="true">
+                <source src="{{asset('uploads/background/background.mp4')}}" alt="Un bel appareil photo..." type="video/mp4"/>
+            </video>
+
+        <!--
+        - La propriété content est utilisée afin de générer le contenu d'un élément.
+        - haut : Voir, le fichier CSS styles.css
+        - d-none, d-md-block : Pour le smartphone on masquent le h3 et h6. On utilise donc de base la classe d-none pour empêcher l’affichage et la classe d-md-block pour avoir l’affichage à partir des tablettes.
+        -->
+            <div class="content haut d-none d-md-block">
+                <h3 class="text-warning">Bienvenue sur JusteUnRegard</h3>
+                <h6 class="text-warning">Ce que l'oeil <i class="fas fa-eye"></i> humain ne perçoit pas, la photographie <i
+                        class="fas fa-camera"></i> vous le révèlera.</h6>
+            </div>
+
+        <!--
+        - La propriété content est utilisée afin de générer le contenu d'un élément.
+        - bas : Voir, le fichier styles.css
+        - d-none, d-md-block : Pour le smartphone on masquent le Bouton Inscription et h6. On utilise donc de base la classe d-none pour empêcher l’affichage et la classe d-md-block pour avoir l’affichage à partir des tablettes.
+        - row : une ligne avec 12 colonnes, puis on la splite en 2 parties :
+        - col-md-8, Moyen format ≥ 992 px & < 1200 px ( Petit écran )
+        - col-md-4, Moyen format ≥ 992 px & < 1200 px ( Petit écran )
+        - btn btn-...: Bouton avec les effets de la librairie Bootstrap
+        -->
+            <div class="content bas d-none d-md-block">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6 class="text-warning">Trouvez l’inspiration. Rejoignez la communauté JusteUnRegard, des photos, des tutoriaux, de la
+                            bienveillance...</h6>
+                    </div>
+                    <div class="col-md-4">
+                        {# On masque les boutons Inscrivez-vous si déjà connecté #}
+                        {%  if app.user %}
+                            <a class="btn btn-outline-warning" href="{{ path('media_index') }}">  
+                                <i class="far fa-smile-wink"></i>
+                                Bienvenue, {{ app.user }}
+                            </a>
+                        {% else %} 
+                            <a class="btn btn-outline-warning" href="{{ path('app_register') }}">
+                                <i class="fas fa-pencil-alt"></i>
+                                Inscrivez-vous, c'est gratuit
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin : Vidéo de bienvenue https://pixabay.com/videos/photography-camera-outdoors-vintage-245/ -->
+
+    <!-- Début : Mur de photo-->
+    <!--
+    - gallery-block, cards-gallery : Voir, le fichier CSS cards-gallery.css
+    - container-fluid : La classe container-fluid permet à la grille d'occuper toute la largeur
+    - jumbotron : Permet d'afficher un élément graphique que l'on place généralement en haut de page, notre titre Mur de photo...
+    -->
+    <section class="gallery-block cards-gallery">
+        <div class="container-fluid">
+            <div class="shadow jumbotron text-center">
+                <h2>Mur de photographie</h2>
+                <p>Quelques exemples de photographies de nos adhérents...</p>
+            </div>
+
+            <div class="row no-padding">
+            {% for medium in medias %}
+                <!--xs 1 image, sm 2 images, md 3 images et lg 6 images-->
+                    <div class="col-sm-6 col-md-4 col-lg-2">
+                    <!--
+                    - Site avec les explications : https://o7planning.org/fr/11971/tutoriel-bootstrap-card
+                    - card : est containeur de contenu
+                    - border-0 : on retire le border
+                    - transform-on-hover : Voir, le fichier CSS cards-gallery.css
+                    - card-body cardBodyNone : partie ou on met le texte -> h6, details, summary, a
+                    - details et summary :
+                        L'élément HTML <details> est utilisé comme un outil permettant de révéler une information.Un résumé ou un intitulé peuvent être fournis grâce à un élément <summary>.
+                        La plupart du temps, le contrôle utilisé pour cet élément est un triangle qui est tourné ou tordu afin d'indiquer
+                        si l'élément est révélé ou non. Si le premier élément fils de l'élément <details> est un élément <summary>,
+                        c'est le contenu de ce dernier qui est utilisé comme intitulé pour le contenu à révéler (l'intitulé est donc toujours visible).
+                    - text-secondary et text-muted : couleur du texte -> titre, auteur & description
+                    - card-title et card-text : les contenus
+                    -->
+                        <div class="rotate">
+                            <div class="card border-0 transform-on-hover">
+                                <img data-src="{{ asset ("uploads/images/featured/") }}{{ medium.nom }}"  alt="{{ medium.libelle }}"
+                                    class="lazyload card-img-top imgMurPhoto" id="mediaID{{ medium.id }}">
+                                <div class="card-body cardBodyNone">
+                                    <h6 class="card-title text-secondary">{{ medium.libelle }}</h6>
+                                    <details class="card-text text-muted">
+                                        <summary>{{ medium.libelle | raw }}...</summary>
+                                        <p>{{ medium.description | raw }}</p>
+                                    </details>
+                                    <hr>
+                                        <div class="btn-group-vertical" role="group" aria-label="Infos membre">
+                                            <button type="button" class="btn btn-sm btn-outline-danger">
+                                                <a href="{{ path('media_show_user', {'id': medium.user.id }) }}">
+                                                    Je suis
+                                                        {% if medium.user.civilite == "Monsieur" %}
+                                                            <i class="fas fa-male"></i>
+                                                        {% else %}
+                                                            <i class="fas fa-female"></i>
+                                                        {% endif %}
+                                                        {{ medium.user.nom | raw }} voici, mes photos
+                                                </a>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-warning">
+                                                <a href="{{ path('media_show_category', {'id': medium.categorie.id }) }}">{{ medium.getCategorie() }}</a>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-muted disabled"><small>Posté le {{ medium.createdAt | date("d/m/Y") }}</small></button>
+                                        </div>
+                                    <br>
+
+                                    {% include 'partials/partialsBottomActionUser.html.twig' %} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Fin : Mur de photo-->
+    </div>
+
+
+    <!-- Début : Une vidéo de tutorial -->
+    <div class="embed-responsive embed-responsive-16by9">
+        <video preload="none" poster="{{asset('uploads/background/tutorial.jpg')}}" controls="true">
+            <source src="{{asset('uploads/background/tutorial.mp4')}}" alt="Photographie de paysage"
+                    type="video/mp4"/>
+        </video>
+        <div class="content haut d-none d-md-block">
+            <h3 class="text-warning">Tutorial vidéo</h3>
+            <p class="text-warning">Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque eaque delectus architecto aliquid?
+                Cumque
+                est quos asperiores possimus ipsum provident placeat, dolore ullam, modi pariatur sapiente mollitia qui
+                magnam.
+            </p>
+        </div>
+        <div class="content bas d-none d-md-block">
+            <div class="row">
+                <div class="col-md-8">
+                    <h6 class="text-warning">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima eum nulla magnam qui quidem labore facere saepe sed alias  sunt nam, quasi dolores asperiores nobis quos unde vero nihil ab.</h6>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-outline-warning" href="{{ path('home_murdetutoriel') }}">
+                        <i class="fas fa-pencil-alt"></i>
+                        Voir l'ensemble des tutorials
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin : Une vidéo de tutorial --> 
+
+    <!-- Début :  Les publicites et les ventes -->
+    <!--
+    - espace : Voir, le fichier CSS styles.css
+    - card* : Voir les commentaires sur la partie "Mur de photo" au -dessus
+    -->
+    <div class="container-fluid espace">
+            <div class="shadow jumbotron text-center my-5">
+                <h2>Ventes de matériels et publicité</h2>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui fugiat, fugit perspiciatis officia mollitia magni labore tenetur, consequatur reiciendis tempora, blanditiis obcaecati recusandae explicabo...</p>
+            </div>
+
+        <div class="row">
+            <!-- Début : Ventes -->
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-secondary">Ventes</h5>
+                        <p class="card-text text-muted">Vendez vos accessoires photographiques entre vous…</p>
+
+                    <!-- Début : Carousel -->
+                    <!--
+                    Première étape, on crée le div qui va contenir notre carrousel.
+                    - <div id=“option” class=”carousel slide” data-ride=“carousel” >
+                    - Nous indiquons à bootstrap que nous voulons créer un carrousel avec la classe .caroussel.
+                    - Nous lui donnons un identifiant id=“option”
+                    - nous rajoutons l’attribut data-ride=“carousel” pour dire à bootstrap de faire défiler les images (éléments) automatiquement.
+                    - slide sert à ajouter une animation lors du passage d’un élément à un autre.
+
+                     Deuxième étape, on place le contenu principal du carrousel (dans notre exemple des images).
+                    - La classe .carousel-inner va contenir tout le contenu principal.
+                    - Chacune des images est enveloppée dans la classe .carousel-item et on rajoute la classe .active à la première d’entre elles.
+                    - On place notre image.
+                    - On rajoute une légende (c’est optionnel bien sûr) avec la classe .carousel-caption.
+                    -->
+                        <div id="carouselIndicatorsVentes" class="carousel slide carousel-fade" data-ride="carousel"
+                             data-pause="hover">
+            
+                            <div class="carousel-inner">
+                                {% for accessoire in accessoires %}
+                                    <div class="carousel-item {% if loop.index == 1 %}active{% endif %}"
+                                         style="background-image: url('{{ asset ("uploads/images/featured/") }}{{ accessoire.nom }}'); height: 400px">
+                                        <div class="carousel-caption d-none d-md-block text-white">
+                                            <summary class="content bas text-white">
+                                                {{accessoire.libelle}}
+                                                <details class="text-white">
+                                                    {{accessoire.description}}
+                                                </details>
+                                            </summary>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        <!-- Troisiéme et dernière étape, on crée des indicateurs qui se placeront des deux côtés de l’image (ici des flèches)
+                        pour revenir manuellement à l’image précédente ou pour avancer vers l’image suivante.
+                        On crée des balises de lien <a> dans lesquelles on place notre identifiant href=”#option“
+                        On rajoute la classe . carousel-control-prev ou carousel-control-next avec l’attribut data-slide=”prev“ ou
+                        data-slide=”next“ pour spécifier vers quelle image la flèche doit nous envoyer.
+                        Et enfin on place dans une balise <span> les icônes des indicateurs .carousel-control-prev-icon ou .carousel-control-next-icon
+                        -->
+                            <!-- Début : Contrôle Précèdent et Suivant-->
+                            <a class="carousel-control-prev" href="#carouselIndicatorsVentes" role="button"
+                               data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Précèdent</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselIndicatorsVentes" role="button"
+                               data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Suivant</span>
+                            </a>
+                            <!-- Fin : Contrôle Précèdent et Suivant -->
+                        </div>
+                        <!-- Fin : Carousel -->
+                        <br>
+                        <a href="{{ path('home_murdevente') }}" class="btn btn-outline-warning">Voir l'ensemble des
+                            accessoires à vendre</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin : Ventes -->
+
+            <!-- Début : Pub -->
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-secondary">Publicités</h5>
+                        <p class="card-text text-muted">Faite de la publicité pour vos clubs photographiques, pour vos
+                            salons, vos expositions…</p>
+
+                        <div id="carouselIndicatorsPub" class="carousel slide carousel-fade" data-ride="carousel"
+                             data-pause="hover">
+
+                            <div class="carousel-inner">
+                                {% for publicite in publicites %}
+                                    <div class="carousel-item {% if loop.index == 1 %}active{% endif %}"
+                                         style="background-image: url('{{ asset ("uploads/images/featured/") }}{{ publicite.nom }}'); height: 400px">
+                                        <div class="carousel-caption d-none d-md-block text-white">
+                                            <summary class="content bas text-white">
+                                                {{publicite.libelle}}
+                                                <details class="text-white">
+                                                    {{publicite.description}}
+                                                </details>
+                                            </summary>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <a class="carousel-control-prev" href="#carouselIndicatorsPub" role="button"
+                               data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Précèdent</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselIndicatorsPub" role="button"
+                               data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Suivant</span>
+                            </a>
+                        </div>
+                        <br>
+                        <a href="{{ path('home_murdepublicite') }}" class="btn btn-outline-warning">Voir l'ensemble des
+                            publicités</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin : Pub -->
+        </div>
+        <!-- Fin :  Les publicites et les ventes -->
+
+        <!--Début :  Bouton Inscription -->
+        <hr class="mt-5">
+        <div class="row">
+            <div class="col-md-8 text-center">
+                <p>Trouvez l’inspiration. Rejoignez la communauté JusteUnRegard, des photos, des tutoriaux, de la
+                    bienveillance...</p>
+            </div>    
+            <div class="col-md-4">
+                {# On masque les boutons Inscrivez-vous si déjà connecté #}
+                    {%  if app.user %}
+                        <a class="btn btn-outline-warning" href="{{ path('media_index') }}"><i class="fas fa-pencil-alt"></i>
+                            Bienvenue, {{ app.user }}</a>
+                    {% else %} 
+                        <a class="btn btn-outline-warning" href="{{ path('app_register') }}"><i class="fas fa-pencil-alt"></i>
+                        Inscrivez-vous, c'est gratuit</a>
+                    {% endif %}
+            </div>
+        </div>
+        <!--Fin :  Bouton Inscription -->
+    </div>
+
+<!-- START Bootstrap-Cookie-Alert -->
+    <div class="alert text-center text-warning cookiealert" role="alert">
+        <b>Aimez-vous les cookies ?</b> &#x1F36A; Nous utilisons des cookies pour vous garantir la meilleure expérience sur notre site JUSTEUNREGARD. <a href="https://cookiesandyou.com/" target="_blank"><b class="text-success">En savoir plus</b></a>
+
+        <button type="button" class="btn btn-warning btn-sm acceptcookies">
+            J'accepte les cookies &#x1F36A;
+        </button>
+    </div>
+<!-- END Bootstrap-Cookie-Alert -->
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/axios.min.js') }}"></script>
+    <script>
+
+    //Like Unlike
+        function onClickBtnLike(event){
+            event.preventDefault();
+            const url = this.href;
+            const spanCount = this.querySelector('span.js-likes');
+            const icone = this.querySelector('i');
+
+            axios.get(url).then(function(response){
+                spanCount.textContent = response.data.likes;
+
+                if(icone.classList.contains('fas')) {
+                    icone.classList.replace('fas','far');
+                }else{
+                    icone.classList.replace('far','fas');
+                }
+            }).catch(function(error){
+                if(error.response.status === 403){
+                    window.alert("Connectez-vous pour liker :-)");
+                    }
+                })
+            };
+    
+        document.querySelectorAll('a.js-like').forEach(function(link){  
+                link.addEventListener('click', onClickBtnLike);
+        })
+        
+    //Bannir
+        var mediaID;
+
+        function onClickBtnBannir(e){
+            event.preventDefault();
+            const url = this.href;
+            axios.get(url).then(function(response){
+                let tmp = 'mediaID' + mediaID;
+                //alert(tmp);
+                //document.getElementById(tmp).style.display = "none";
+                document.getElementById(tmp).src = "/uploads/background/banned.png";
+            }).catch(function(error){
+                if(error.response.status === 403){
+                    window.alert("Connectez-vous pour bannir :-)");
+                    }
+                })
+            };
+    
+        document.querySelectorAll('a.js-bannir').forEach(function(link){  
+                link.addEventListener('click', onClickBtnBannir);   
+         });
+
+
+    //On récupère l'id du media 
+        function getMediaID(id) {
+            mediaID = id;
+        }
+    </script>
+{% endblock %}
